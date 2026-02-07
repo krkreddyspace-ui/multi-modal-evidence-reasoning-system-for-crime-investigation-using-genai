@@ -1,0 +1,25 @@
+# UI
+streamlit
+
+# Core Python utilities
+numpy>=1.24.0
+pandas>=2.0.0
+pyyaml>=6.0
+
+# Audio processing
+openai-whisper
+
+# Image & OCR (future use)
+opencv-python
+pillow
+pytesseract
+
+# Video processing (future use)
+moviepy
+
+# GenAI / NLP
+transformers>=4.35.0
+sentencepiece
+
+# Logging & helpers
+loguru
