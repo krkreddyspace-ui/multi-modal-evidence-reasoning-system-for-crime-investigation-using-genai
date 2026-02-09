@@ -14,8 +14,7 @@ opencv-python
 pillow
 pytesseract
 
-# Video processing (future use)
-moviepy
+
 
 # GenAI / NLP
 transformers>=4.35.0
