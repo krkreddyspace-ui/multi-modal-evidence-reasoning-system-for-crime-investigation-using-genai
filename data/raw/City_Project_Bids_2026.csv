@@ -1,0 +1,12 @@
+Project_ID,Bidder_Name,Bid_Amount,Submission_Date,Approval_Status,Authorized_By,Notes
+CB-991,SafeStructure_Ltd,4500000.00,2026-01-10,REJECTED,SYSTEM_ALGO,High materials overhead
+CB-991,Metro_Engineers,4700000.00,2026-01-11,REJECTED,SYSTEM_ALGO,Incomplete safety certs
+CB-991,Apex_Build-Corp,5800000.00,2026-01-14,APPROVED,BOB_VANCE_DIR,Strategic urgency override
+CB-991,Steel_Works_Co,4400000.00,2026-01-15,REJECTED,SYSTEM_ALGO,Bid received after window
+CB-991,Titan_Constructions,4650000.00,2026-01-12,REJECTED,SYSTEM_ALGO,Standard bid profile
+CB-991,Bridge_Masters_Inc,4900000.00,2026-01-13,REJECTED,SYSTEM_ALGO,Historical delay risks
+PL-102,Green_Space_LLC,120000.00,2026-01-16,APPROVED,SYSTEM_ALGO,Park landscaping project
+PL-102,Earth_Works,135000.00,2026-01-17,REJECTED,SYSTEM_ALGO,Cost exceeds allocation
+RD-404,Pave_Way_Group,2200000.00,2026-01-18,APPROVED,SYSTEM_ALGO,Routine road maintenance
+RD-404,Asphalt_Kings,2100000.00,2026-01-19,REJECTED,SYSTEM_ALGO,Equipment availability issues
+CB-991,Foundation_First,5900000.00,2026-01-14,REJECTED,BOB_VANCE_DIR,Redundant pricing

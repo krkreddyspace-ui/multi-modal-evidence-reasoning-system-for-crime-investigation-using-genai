@@ -1,0 +1,9 @@
+From: arjun.mehra@biogenix.com
+To: dr.kavita@biogenix.com
+Subject: Re: Trial Data Issue
+
+No, I haven't touched the data since last week.
+
+Only Neha and IT admin Ravi have access to the raw database.
+
+- Arjun

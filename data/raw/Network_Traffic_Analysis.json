@@ -1,0 +1,17 @@
+[
+  {
+    "event_id": "NET-SSH-404",
+    "timestamp": "2026-05-20T01:26:00Z",
+    "source_ip": "10.0.1.200",
+    "destination_ip": "185.12.33.9",
+    "protocol": "SSH",
+    "tunnel_type": "ENCRYPTED_TUNNEL",
+    "data_transferred_GB": 12.1,
+    "handshake_details": {
+      "cipher": "AES-256-GCM",
+      "public_key_fingerprint": "SHA256:nU0A1b2C3d4E5f6G7h8I9j0K1l2M3n4O",
+      "user_identity_string": "chloe_c_dev_key"
+    },
+    "status": "CONNECTION_TERMINATED_BY_SOURCE"
+  }
+]

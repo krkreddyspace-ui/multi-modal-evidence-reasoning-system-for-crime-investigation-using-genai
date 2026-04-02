@@ -1,0 +1,47 @@
+[
+  {
+    "log_id": "TERM-8820-A",
+    "timestamp": "2026-03-10T02:45:30Z",
+    "user": "v_seth_dev",
+    "terminal": "pts/0",
+    "command": "cd /home/v_seth/admin_tools/security_scripts",
+    "status": "SUCCESS",
+    "ip_address": "192.168.50.12"
+  },
+  {
+    "log_id": "TERM-8820-B",
+    "timestamp": "2026-03-10T02:50:11Z",
+    "user": "v_seth_dev",
+    "terminal": "pts/0",
+    "command": "sudo ./emergency_drain.sh --bypass-multisig --target bc1q_WASHER_01",
+    "status": "EXECUTED_SUCCESS",
+    "auth_level": "ROOT_OVERRIDE",
+    "notes": "Multisig check-sum bypassed manually"
+  },
+  {
+    "log_id": "TERM-8821-A",
+    "timestamp": "2026-03-10T03:15:45Z",
+    "user": "v_seth_dev",
+    "terminal": "pts/0",
+    "command": "ls -la /var/log/nexus_exchange/auth.log",
+    "status": "SUCCESS",
+    "ip_address": "192.168.50.12"
+  },
+  {
+    "log_id": "TERM-8821-B",
+    "timestamp": "2026-03-10T03:16:05Z",
+    "user": "v_seth_dev",
+    "terminal": "pts/0",
+    "command": "rm -rf ./logs/session_0310.log",
+    "status": "EXECUTED_SUCCESS",
+    "notes": "Session history purged"
+  },
+  {
+    "log_id": "TERM-8822-C",
+    "timestamp": "2026-03-10T03:18:20Z",
+    "user": "v_seth_dev",
+    "terminal": "pts/0",
+    "command": "exit",
+    "status": "SUCCESS"
+  }
+]

@@ -1,0 +1,12 @@
+Database Access Log:
+
+User: ravi.it
+Time: 11:50 PM
+Action: Accessed raw_trial_data.db
+
+User: neha.research
+Time: 09:00 PM
+Action: Viewed data
+
+User: arjun.mehra
+Time: No activity recorded

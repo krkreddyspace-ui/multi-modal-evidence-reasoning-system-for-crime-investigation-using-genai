@@ -1,0 +1,9 @@
+Timestamp,User_ID,API_Endpoint,Resource_Size,IP_Source,Auth_Token_Status,User_Agent
+2026-05-20T01:05:01Z,s_lee_dev,POST /model/train,42KB,10.0.1.45,VALID,Postman/10.13
+2026-05-20T01:08:12Z,j_rodriguez_dev,GET /model/status,1KB,10.0.1.50,VALID,ChimeraOps/1.2
+2026-05-20T01:10:33Z,c_carter_analyst,GET /data/verify,15KB,10.0.1.105,VALID,Mozilla/5.0 (Windows)
+2026-05-20T01:14:55Z,a_thorne_res,GET /model/status,1KB,10.0.1.99,VALID,Mozilla/5.0 (Macintosh)
+2026-05-20T01:15:00Z,a_thorne_res,GET /model/weights/full,12GB,10.0.1.200,VALID_CHALLENGED,Python-urllib/3.10
+2026-05-20T01:15:01Z,a_thorne_res,GET /model/weights/full,12GB,10.0.1.200,VALID,Python-urllib/3.10
+2026-05-20T01:25:00Z,a_thorne_res,POST /model/weights/verify,1KB,10.0.1.200,VALID,Python-urllib/3.10
+2026-05-20T01:30:11Z,s_lee_dev,GET /model/status,1KB,10.0.1.45,VALID,ChimeraOps/1.2

@@ -1,0 +1,12 @@
+Incident Report:
+
+- Data inconsistency detected in trial_results_final.csv
+- Original dataset altered before submission
+- Data leak suspected due to external competitor similarities
+
+Suspects:
+1. Ravi (IT Admin - full access)
+2. Neha (Research Analyst)
+3. Arjun (Data Lead)
+
+Conclusion: Likely insider with system-level privileges

@@ -1,0 +1,7 @@
+Bank Transaction Alert:
+
+Account: Ravi Kumar
+Date: Last night
+Amount: ₹8,50,000 credited
+
+Source: Unknown offshore account

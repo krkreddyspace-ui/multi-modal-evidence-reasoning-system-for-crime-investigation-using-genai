@@ -1,5 +1,7 @@
 # UI
-streamlit
+fastapi
+uvicorn
+python-multipart
 
 # Core Python utilities
 numpy>=1.24.0
@@ -14,11 +16,12 @@ opencv-python
 pillow
 pytesseract
 
-
-
 # GenAI / NLP
 transformers>=4.35.0
 sentencepiece
+spacy
+ollama
+matplotlib
 
 # Logging & helpers
 loguru

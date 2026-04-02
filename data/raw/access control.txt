@@ -1,0 +1,5 @@
+Access Privileges:
+
+Ravi (IT Admin) → Full system access
+Neha → Read-only research data
+Arjun → Data analysis (no raw DB write access)

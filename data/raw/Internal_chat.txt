@@ -1,0 +1,7 @@
+[2024-02-15 10:12:05] Linda_Zhao: Hey Tim, I’m running some stress tests on the Q1 payroll automation script.
+[2024-02-15 10:13:40] Tim_IT_Asst: Sure thing, Linda. Do you need a sandbox environment?
+[2024-02-15 10:14:22] Linda_Zhao: Yes. I need to simulate a high-level manager entry in the Operations department. Let's call the dummy account 'James Sterling.'
+[2024-02-15 10:15:01] Tim_IT_Asst: Okay, created ID: JS-404. It’s live in the sandbox now.
+[2024-02-15 10:15:30] Linda_Zhao: Thanks. I'll need a manual override key to ensure the 'salary' triggers the banking API correctly. 
+[2024-02-15 10:16:15] Tim_IT_Asst: I’ve granted your Admin ID (LZ-001) temporary write-access to the payroll table for that specific ID. Just let me know when you're done so I can disable it.
+[2024-02-15 10:17:00] Linda_Zhao: Perfect. Don't worry about it; the script should auto-disable the account after the 'test' run.

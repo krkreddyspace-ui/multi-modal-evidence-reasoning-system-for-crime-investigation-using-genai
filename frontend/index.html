@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cyber-Neural Forensic Interface v2.0</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://code.iconify.design/iconify-icon/1.0.7/iconify-icon.min.js"></script>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;700&display=swap');
+        :root { --neon-violet: #bc13fe; --neon-cyan: #00f3ff; --neon-red: #ff003c; --neon-green: #39ff14; --bg-black: #020205; }
+        body { font-family: 'Space Grotesk', sans-serif; background-color: var(--bg-black); color: #ffffff; overflow-x: hidden; }
+        .mono { font-family: 'JetBrains Mono', monospace; }
+        .cyber-grid { background-image: linear-gradient(rgba(188, 19, 254, 0.05) 1px, transparent 1px), linear-gradient(90deg, rgba(188, 19, 254, 0.05) 1px, transparent 1px); background-size: 40px 40px; }
+        .neon-border-violet { border: 1px solid var(--neon-violet); box-shadow: 0 0 10px rgba(188, 19, 254, 0.2), inset 0 0 5px rgba(188, 19, 254, 0.1); }
+        .neon-border-cyan { border: 1px solid var(--neon-cyan); box-shadow: 0 0 10px rgba(0, 243, 255, 0.2), inset 0 0 5px rgba(0, 243, 255, 0.1); }
+        .neon-border-red { border: 1px solid var(--neon-red); box-shadow: 0 0 15px rgba(255, 0, 60, 0.3), inset 0 0 8px rgba(255, 0, 60, 0.1); }
+        .scanline { width: 100%; height: 4px; background: linear-gradient(to bottom, transparent, rgba(0, 243, 255, 0.05), transparent); position: absolute; left: 0; top: 0; animation: scan 6s linear infinite; pointer-events: none; z-index: 50; }
+        @keyframes scan { 0% { top: -10%; } 100% { top: 110%; } }
+        .digital-rain { position: fixed; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; opacity: 0.02; z-index: -1; }
+        .animate-pulse-glow { animation: pulse-glow 3s ease-in-out infinite; }
+        @keyframes pulse-glow { 0%, 100% { opacity: 0.7; } 50% { opacity: 1; filter: brightness(1.2); } }
+        .glass-panel { background: rgba(5, 5, 10, 0.85); backdrop-filter: blur(24px); }
+        .clip-path-tech { clip-path: polygon(0 0, 100% 0, 100% 88%, 96% 100%, 0 100%); }
+        .flow-line { stroke-dasharray: 10; animation: dash 20s linear infinite; }
+        @keyframes dash { to { stroke-dashoffset: -1000; } }
+        ::-webkit-scrollbar { width: 4px; }
+        ::-webkit-scrollbar-track { background: #000; }
+        ::-webkit-scrollbar-thumb { background: var(--neon-violet); box-shadow: 0 0 10px var(--neon-violet); }
+        .timeline-gradient { background: linear-gradient(to bottom, var(--neon-cyan), var(--neon-violet), var(--neon-red)); }
+        .data-particle { animation: particle-flow 4s linear infinite; }
+        @keyframes particle-flow { 0% { offset-distance: 0%; opacity: 0; } 10% { opacity: 1; } 90% { opacity: 1; } 100% { offset-distance: 100%; opacity: 0; } }
+        .scroll-hidden::-webkit-scrollbar { display: none; }
+        .scroll-hidden { -ms-overflow-style: none; scrollbar-width: none; }
+    </style>
+</head>
+<body>
+
+    <!-- Loading State Overlay -->
+    <div id="loading-state" class="fixed inset-0 z-[100] bg-[#020205] bg-opacity-90 backdrop-blur-md flex-col items-center justify-center" style="display: none;">
+        <div class="w-24 h-24 border-4 border-cyan-500 border-t-transparent rounded-full animate-spin"></div>
+        <h2 class="mt-8 text-2xl font-bold text-cyan-400 tracking-widest uppercase animate-pulse">Analyzing Evidence</h2>
+        <p class="text-sm text-white/50 mono mt-2">Extracting signals and performing reasoning...</p>
+    </div>
+
+    <!-- Empty State (just a wrapper to switch views if needed) -->
+    <div id="results-dashboard" class="min-h-screen relative cyber-grid flex flex-col">
+        <canvas id="rainCanvas" class="digital-rain"></canvas>
+        <svg class="fixed inset-0 w-full h-full pointer-events-none z-0 opacity-20" xmlns="http://www.w3.org/2000/svg">
+            <path id="flowPath1" d="M 300 200 Q 600 400 900 200" stroke="var(--neon-cyan)" stroke-width="1" fill="none" class="flow-line"/>
+            <circle r="2" fill="var(--neon-cyan)"><animateMotion dur="4s" repeatCount="indefinite"><mpath href="#flowPath1"/></animateMotion></circle>
+            <path id="flowPath2" d="M 1200 400 Q 900 600 600 800" stroke="var(--neon-violet)" stroke-width="1" fill="none" class="flow-line"/>
+            <circle r="2" fill="var(--neon-violet)"><animateMotion dur="6s" repeatCount="indefinite"><mpath href="#flowPath2"/></animateMotion></circle>
+        </svg>
+
+        <header class="sticky top-0 z-[60] glass-panel border-b border-white/10 px-8 py-4 flex items-center justify-between">
+            <div class="flex items-center gap-4">
+                <div class="relative group">
+                    <div class="absolute -inset-1 bg-gradient-to-r from-violet-600 to-cyan-500 rounded-lg blur opacity-25 group-hover:opacity-75 transition duration-1000"></div>
+                    <div class="relative px-4 py-2 bg-black border border-white/20 rounded-lg flex items-center gap-3">
+                        <iconify-icon icon="lucide:cpu" class="text-2xl text-cyan-400 animate-pulse"></iconify-icon>
+                        <div class="leading-none">
+                            <h1 class="text-xl font-bold tracking-tighter text-white">INVESTI<span class="text-violet-500">GEN</span></h1>
+                            <p class="text-xs uppercase tracking-[0.3em] text-cyan-500/80 font-bold">Multi-Modal Investigation System</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="flex items-center gap-8">
+                <div class="flex flex-col items-end hidden md:flex">
+                    <span class="text-[10px] text-violet-400 font-bold tracking-widest uppercase">Neural Sync Status</span>
+                    <span class="text-xs mono text-cyan-400">LATENCY: 0.04ms [VERIFIED]</span>
+                </div>
+                <div class="h-10 w-px bg-white/10"></div>
+                <div class="flex items-center gap-4 text-white/60">
+                    <!-- Removed icons and profile picture -->
+                </div>
+            </div>
+        </header>
+
+        <main class="flex-1 p-6 grid grid-cols-12 gap-6 max-w-[1700px] mx-auto w-full">
+            <aside class="col-span-12 lg:col-span-2 space-y-4">
+                <div class="neon-border-cyan rounded-xl p-4 glass-panel h-[calc(100vh-140px)] flex flex-col">
+                    <div class="flex items-center gap-2 mb-6 border-b border-white/10 pb-4">
+                        <iconify-icon icon="lucide:workflow" class="text-cyan-400 text-xl"></iconify-icon>
+                        <h3 class="text-sm font-bold text-white uppercase tracking-widest">Process Flow</h3>
+                    </div>
+                    <div class="flex-1 w-full relative flex flex-col items-center justify-start pt-8 pb-8" id="flowchart-container">
+                        <div id="flow-node-1" class="relative z-10 flex flex-col items-center w-full transition-all duration-500 opacity-50">
+                            <span class="absolute right-[calc(50%+1.5rem)] top-3 text-[10px] font-bold text-white/50 uppercase tracking-widest text-right whitespace-nowrap transition-colors duration-500" id="flow-text-1">Data Intake</span>
+                            <div class="w-10 h-10 rounded-full border-2 border-white/20 bg-[#05050A] flex items-center justify-center text-white/50 transition-colors duration-500 relative z-20" id="flow-icon-1">
+                                <iconify-icon icon="lucide:database"></iconify-icon>
+                            </div>
+                        </div>
+                        <div class="h-10 w-px bg-white/20 transition-colors duration-500 relative z-10" id="flow-line-1"></div>
+                        
+                        <div id="flow-node-2" class="relative z-10 flex flex-col items-center w-full transition-all duration-500 opacity-50">
+                            <span class="absolute left-[calc(50%+1.5rem)] top-3 text-[10px] font-bold text-white/50 uppercase tracking-widest text-left whitespace-nowrap transition-colors duration-500" id="flow-text-2">Data Parsing</span>
+                            <div class="w-10 h-10 rounded-full border-2 border-white/20 bg-[#05050A] flex items-center justify-center text-white/50 transition-colors duration-500 relative z-20" id="flow-icon-2">
+                                <iconify-icon icon="lucide:cpu"></iconify-icon>
+                            </div>
+                        </div>
+                        <div class="h-10 w-px bg-white/20 transition-colors duration-500 relative z-10" id="flow-line-2"></div>
+
+                        <div id="flow-node-3" class="relative z-10 flex flex-col items-center w-full transition-all duration-500 opacity-50">
+                            <span class="absolute right-[calc(50%+1.5rem)] top-3 text-[10px] font-bold text-white/50 uppercase tracking-widest text-right whitespace-nowrap transition-colors duration-500" id="flow-text-3">AI Reasoning</span>
+                            <div class="w-10 h-10 rounded-full border-2 border-white/20 bg-[#05050A] flex items-center justify-center text-white/50 transition-colors duration-500 relative z-20" id="flow-icon-3">
+                                <iconify-icon icon="lucide:brain-circuit"></iconify-icon>
+                            </div>
+                        </div>
+                        <div class="h-10 w-px bg-white/20 transition-colors duration-500 relative z-10" id="flow-line-3"></div>
+
+                        <div id="flow-node-4" class="relative z-10 flex flex-col items-center w-full transition-all duration-500 opacity-50">
+                            <span class="absolute left-[calc(50%+1.5rem)] top-3 text-[10px] font-bold text-white/50 uppercase tracking-widest text-left whitespace-nowrap transition-colors duration-500" id="flow-text-4">Target Dossier</span>
+                            <div class="w-10 h-10 rounded-full border-2 border-white/20 bg-[#05050A] flex items-center justify-center text-white/50 transition-colors duration-500 relative z-20" id="flow-icon-4">
+                                <iconify-icon icon="lucide:file-check"></iconify-icon>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </aside>
+
+            <div id="dashboard-content" class="col-span-12 lg:col-span-7 space-y-6 scroll-hidden overflow-y-auto pr-2" style="height: calc(100vh - 140px);">
+                
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div class="relative neon-border-red rounded-xl p-6 bg-black/40 overflow-hidden group clip-path-tech">
+                        <div class="scanline"></div>
+                        <div class="absolute top-3 right-3 flex items-center gap-1 px-2 py-0.5 bg-red-500/10 border border-red-500/30 rounded-full animate-pulse">
+                            <span class="relative flex h-2 w-2">
+                                <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-red-400 opacity-75"></span>
+                                <span class="relative inline-flex rounded-full h-2 w-2 bg-red-500"></span>
+                            </span>
+                            <span class="text-xs font-bold text-red-500 uppercase tracking-tighter">Target Locked</span>
+                        </div>
+                        <div class="space-y-4">
+                            <p class="text-sm font-bold text-red-500/70 tracking-widest uppercase">Identified Culprit Profile</p>
+                            <h2 id="res-culprit" class="text-4xl font-black text-white tracking-tighter mb-1 italic group-hover:text-red-500 transition-colors uppercase">Awaiting ID</h2>
+                            <div class="flex items-center gap-4 px-3 py-2 bg-red-500/5 border border-red-500/20 rounded-md">
+                                <iconify-icon icon="lucide:fingerprint" class="text-3xl text-red-500 shadow-[0_0_10px_#ff003c]"></iconify-icon>
+                                <div class="flex-1">
+                                    <div id="res-tags" class="flex flex-wrap gap-2 mt-1">
+                                        <span class="text-[8px] px-1 bg-red-500/20 border border-red-500/40 rounded text-red-400 font-bold uppercase">CRITICAL</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="relative neon-border-cyan rounded-xl p-6 bg-black/40 overflow-hidden clip-path-tech">
+                        <div class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-cyan-500 to-transparent"></div>
+                        <div class="flex justify-between items-start mb-4">
+                            <div class="space-y-1">
+                                <p class="text-sm font-bold text-cyan-500/70 tracking-widest uppercase">AI Confidence Index</p>
+                                <h2 id="res-confidence" class="text-6xl font-black text-cyan-400 tracking-tighter italic">0%</h2>
+                            </div>
+                            <div class="p-3 bg-cyan-500/10 border border-cyan-500/30 rounded-lg text-cyan-400 shadow-[0_0_15px_rgba(0,243,255,0.2)]">
+                                <iconify-icon icon="lucide:brain" class="text-4xl animate-pulse-glow"></iconify-icon>
+                            </div>
+                        </div>
+                        <div class="relative h-2 w-full bg-white/5 rounded-full overflow-hidden">
+                            <div id="res-confidence-bar" class="absolute h-full bg-cyan-500 shadow-[0_0_20px_#00f3ff]" style="width: 0%"></div>
+                        </div>
+                        <div class="flex justify-between items-center mt-4">
+                            <p class="text-xs mono text-cyan-500/60 uppercase tracking-tighter">Model: NEURAL-EVO v4.2</p>
+                        </div>
+                    </div>
+                </div>
+
+                <section class="neon-border-violet rounded-xl bg-black/60 p-8 relative overflow-hidden">
+                    <div class="absolute top-0 right-0 p-4 opacity-10"><iconify-icon icon="lucide:network" class="text-8xl text-violet-500"></iconify-icon></div>
+                    <div class="flex items-center gap-3 mb-4 border-b border-violet-500/20 pb-4">
+                        <iconify-icon icon="lucide:list-tree" class="text-2xl text-violet-400"></iconify-icon>
+                        <h3 class="text-xl font-bold text-white tracking-tight uppercase">Investigation Reasoning</h3>
+                    </div>
+                    <div id="res-reasoning" class="whitespace-pre-wrap text-gray-300 font-mono text-base leading-relaxed p-4 bg-white/5 rounded-lg border border-violet-500/20 shadow-inner">
+                        Awaiting data...
+                    </div>
+                </section>
+                
+                <section class="neon-border-cyan rounded-xl bg-black/40 p-6 relative overflow-hidden border border-white/5">
+                    <div class="flex items-center gap-3 mb-4 border-b border-cyan-500/20 pb-4">
+                        <iconify-icon icon="lucide:microscope" class="text-xl text-cyan-400"></iconify-icon>
+                        <h3 class="text-lg font-bold text-white tracking-tight uppercase">Key Evidence Findings</h3>
+                    </div>
+                    <div id="res-key-evidence" class="whitespace-pre-wrap text-cyan-100/80 font-mono text-sm leading-relaxed pl-2 border-l-2 border-cyan-500/40">
+                        Awaiting parameters...
+                    </div>
+                </section>
+
+                <section class="space-y-6 pb-8">
+                    <div class="flex items-center justify-between">
+                        <h3 class="text-lg font-bold text-white tracking-widest uppercase border-l-4 border-cyan-500 pl-4">Evidence Vault v2</h3>
+                    </div>
+                    <div id="evidence-container" class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <!-- Evidence Cards dynamically generated here -->
+                    </div>
+                </section>
+            </div>
+
+            <aside class="col-span-12 lg:col-span-3 space-y-6 h-[calc(100vh-140px)] overflow-y-auto pr-2 scroll-hidden">
+                <section class="relative group">
+                    <div class="absolute -inset-1 bg-gradient-to-r from-cyan-500 via-violet-500 to-cyan-500 rounded-xl blur opacity-15 group-hover:opacity-60 transition duration-1000"></div>
+                    <div class="relative bg-black rounded-xl p-6 border border-white/10">
+                        <div class="flex items-center gap-3 mb-6">
+                            <iconify-icon icon="lucide:upload-cloud" class="text-2xl text-cyan-400"></iconify-icon>
+                            <h3 class="text-lg font-bold text-white uppercase tracking-widest">Dossier Intake</h3>
+                        </div>
+                        
+                        <div id="dropzone" class="border-2 border-dashed border-cyan-500/30 rounded-xl p-8 flex flex-col items-center justify-center text-center hover:border-cyan-400/80 hover:bg-cyan-500/5 transition-all cursor-pointer group/drop">
+                            <input type="file" id="file-input" multiple hidden accept=".txt,.png,.jpg,.jpeg,.wav,.mp3,.pdf,.csv">
+                            <div class="w-12 h-12 rounded-full bg-cyan-500/10 flex items-center justify-center text-cyan-500 mb-4 group-hover/drop:scale-110 transition-all shadow-[0_0_15px_rgba(0,243,255,0.2)]">
+                                <iconify-icon icon="lucide:plus" class="text-2xl"></iconify-icon>
+                            </div>
+                            <p class="text-sm font-bold text-white mb-2 uppercase tracking-widest">Drop Evidence Clusters</p>
+                            <p class="text-xs text-gray-500 tracking-widest uppercase mb-4">SECURE PACKET TRANSFER MODE</p>
+                            <button id="browse-btn" class="px-4 py-2 bg-white/5 border border-white/20 hover:bg-white/10 rounded text-xs font-bold tracking-widest uppercase text-cyan-400">Or Click to Browse</button>
+                        </div>
+                        
+                        <div id="file-list" class="mt-4 space-y-2 max-h-48 overflow-y-auto pr-1">
+                            <!-- Selected files listed here -->
+                        </div>
+
+                        <button id="analyze-btn" disabled class="w-full mt-6 py-4 bg-cyan-500 hover:bg-cyan-400 text-black font-black uppercase tracking-[0.2em] rounded-lg shadow-[0_0_30px_rgba(0,243,255,0.3)] transition-all hover:translate-y-[-2px] active:translate-y-0 disabled:opacity-50 disabled:cursor-not-allowed">RUN ENGINE_</button>
+                    </div>
+                </section>
+
+                <section class="neon-border-violet bg-black/40 rounded-xl p-6 border border-white/5">
+                    <div class="flex items-center gap-3 mb-6 border-b border-white/10 pb-4">
+                        <iconify-icon icon="lucide:user-minus" class="text-2xl text-gray-500"></iconify-icon>
+                        <h3 class="text-sm font-bold text-white uppercase tracking-widest">Eliminated Suspects</h3>
+                    </div>
+                    <div id="res-eliminated" class="space-y-4 whitespace-pre-wrap text-gray-400 mono text-sm flex flex-col gap-2">
+                        Awaiting parameters...
+                    </div>
+                </section>
+            </aside>
+        </main>
+
+        <footer class="px-8 py-4 border-t border-white/10 text-center glass-panel z-50">
+            <div class="flex flex-col md:flex-row items-center justify-between gap-4 max-w-[1700px] mx-auto">
+                <p class="text-xs text-gray-600 font-bold uppercase tracking-[0.4em]">WARNING: MULTI-MODAL REASONING LAYER ACTIVE // RESTRICTED ACCESS 881-A</p>
+            </div>
+        </footer>
+    </div>
+    
+    <script src="script.js"></script>
+    <script>
+        const canvas = document.getElementById('rainCanvas');
+        const ctx = canvas.getContext('2d');
+        function resizeCanvas() { canvas.width = window.innerWidth; canvas.height = window.innerHeight; }
+        resizeCanvas();
+        window.addEventListener('resize', resizeCanvas);
+        const fontSize = 16;
+        const columns = Math.ceil(canvas.width / fontSize);
+        const drops = [];
+        for(let x = 0; x < columns; x++) drops[x] = 1;
+        function draw() {
+            ctx.fillStyle = 'rgba(0, 0, 0, 0.05)';
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+            ctx.fillStyle = 'rgba(188, 19, 254, 0.5)'; // subtle violet rain
+            ctx.font = fontSize + 'px monospace';
+            for(let i = 0; i < drops.length; i++) {
+                const text = String.fromCharCode(Math.floor(Math.random() * 128));
+                ctx.fillText(text, i * fontSize, drops[i] * fontSize);
+                if(drops[i] * fontSize > canvas.height && Math.random() > 0.985) drops[i] = 0;
+                drops[i]++;
+            }
+        }
+        setInterval(draw, 45);
+    </script>
+</body>
+</html>

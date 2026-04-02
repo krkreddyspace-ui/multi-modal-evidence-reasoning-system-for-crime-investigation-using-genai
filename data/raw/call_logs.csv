@@ -1,0 +1,4 @@
+Timestamp,From_Number,To_Number,Duration_Sec,Direction
+2026-02-07 23:25:10,555-0102 (Mark),555-0988 (Leo),120,Outgoing
+2026-02-07 23:30:45,555-0102 (Mark),555-0988 (Leo),45,Outgoing
+2026-02-08 00:10:15,555-0988 (Leo),555-4432 (Unknown),30,Outgoing

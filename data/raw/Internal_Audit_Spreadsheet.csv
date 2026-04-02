@@ -1,0 +1,16 @@
+Transaction_ID,Date,Timestamp,Vendor_Name,Category,Amount_USD,Approval_ID,Bank_Ref,Status
+TXN-001,05-01-2024,09:15:22,Port_Services_Inc,Logistics,12450,AUTH_AUTO_01,BK-9921,SUCCESS
+TXN-002,05-01-2024,10:30:10,Fuel_Master_Corp,Fuel,8500,AUTH_AUTO_02,BK-9922,SUCCESS
+TXN-003,06-01-2024,14:20:05,ClearStream_Consulting,Consulting,9850,Admin_Auth_MT-09,BK-7701,SUCCESS
+TXN-004,07-01-2024,11:00:55,Tire_Maintenance_LLC,Maintenance,1200,AUTH_AUTO_01,BK-9923,SUCCESS
+TXN-005,08-01-2024,16:45:30,Global_Shipping_Co,Shipping,45000,Admin_Auth_MT-09,BK-9924,SUCCESS
+TXN-006,12-01-2024,08:30:15,ClearStream_Consulting,Consulting,9720,Admin_Auth_MT-09,BK-7702,SUCCESS
+TXN-007,15-01-2024,09:00:00,Office_Supplies_Pro,Admin,450,AUTH_AUTO_02,BK-9925,SUCCESS
+TXN-008,18-01-2024,13:12:44,ClearStream_Consulting,Consulting,9910,Admin_Auth_MT-09,BK-7703,SUCCESS
+TXN-009,20-01-2024,10:20:10,Port_Services_Inc,Logistics,11800,AUTH_AUTO_01,BK-9926,SUCCESS
+TXN-010,22-01-2024,15:55:20,Driver_Per_Diem_Fund,Payroll,5500,AUTH_AUTO_02,BK-9927,SUCCESS
+TXN-011,25-01-2024,11:11:11,ClearStream_Consulting,Consulting,9885,Admin_Auth_MT-09,BK-7704,SUCCESS
+TXN-012,28-01-2024,09:45:30,Warehouse_Rent_Global,Real_Estate,22000,Admin_Auth_MT-09,BK-9928,SUCCESS
+TXN-013,02-02-2024,14:10:05,ClearStream_Consulting,Consulting,9850,Admin_Auth_MT-09,BK-7705,SUCCESS
+TXN-014,05-02-2024,10:00:00,Fuel_Master_Corp,Fuel,7200,AUTH_AUTO_02,BK-9929,SUCCESS
+TXN-015,10-02-2024,16:30:45,ClearStream_Consulting,Consulting,9720,Admin_Auth_MT-09,BK-7706,SUCCESS

@@ -1,0 +1,58 @@
+[
+  {
+    "log_id": "SW-LOG-8820",
+    "timestamp": "2026-03-25T23:20:01Z",
+    "device_user": "D_MILLER_4412",
+    "heart_rate_BPM": 70,
+    "activity": "DRIVING_ROUTINE",
+    "stress_score": 15,
+    "source": "Optical_HR_Sensor"
+  },
+  {
+    "log_id": "SW-LOG-8821",
+    "timestamp": "2026-03-25T23:25:30Z",
+    "device_user": "D_MILLER_4412",
+    "heart_rate_BPM": 72,
+    "activity": "DRIVING_ROUTINE",
+    "stress_score": 18,
+    "source": "Optical_HR_Sensor"
+  },
+  {
+    "log_id": "SW-LOG-8822-IMPACT",
+    "timestamp": "2026-03-25T23:29:45Z",
+    "device_user": "D_MILLER_4412",
+    "heart_rate_BPM": 145,
+    "activity": "DRIVING_HIGH_STRESS",
+    "stress_score": 95,
+    "source": "Optical_HR_Sensor",
+    "notes": "Instantaneous HR spike detected"
+  },
+  {
+    "log_id": "SW-LOG-8823",
+    "timestamp": "2026-03-25T23:30:15Z",
+    "device_user": "D_MILLER_4412",
+    "heart_rate_BPM": 142,
+    "activity": "DRIVING_HIGH_STRESS",
+    "stress_score": 92,
+    "source": "Optical_HR_Sensor"
+  },
+  {
+    "log_id": "SW-LOG-8824-ALIBI",
+    "timestamp": "2026-03-25T23:35:10Z",
+    "device_user": "D_MILLER_4412",
+    "heart_rate_BPM": 130,
+    "activity": "STATIONARY",
+    "stress_score": 85,
+    "source": "Optical_HR_Sensor",
+    "notes": "User stationary at coordinates 40.7251, -74.0201"
+  },
+  {
+    "log_id": "SW-LOG-8825",
+    "timestamp": "2026-03-25T23:45:00Z",
+    "device_user": "D_MILLER_4412",
+    "heart_rate_BPM": 110,
+    "activity": "STATIONARY",
+    "stress_score": 70,
+    "source": "Optical_HR_Sensor"
+  }
+]

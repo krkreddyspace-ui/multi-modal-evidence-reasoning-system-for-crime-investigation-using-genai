@@ -1,0 +1,11 @@
+From: dr.kavita@biogenix.com
+To: arjun.mehra@biogenix.com
+Subject: Trial Data Issue
+
+Arjun,
+
+The Phase-3 trial data looks altered. Some values don't match the raw dataset.
+
+Did you make any modifications?
+
+- Dr. Kavita
