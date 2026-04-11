@@ -1,0 +1,302 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Forensic Analytics — InvestiGEN</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://code.iconify.design/iconify-icon/1.0.7/iconify-icon.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.4/dist/chart.umd.min.js"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;700&display=swap');
+        :root { --neon-violet: #bc13fe; --neon-cyan: #00f3ff; --neon-red: #ff003c; --neon-green: #39ff14; --bg-black: #020205; }
+        body { font-family: 'Space Grotesk', sans-serif; background-color: var(--bg-black); color: #ffffff; overflow-x: hidden; }
+        .mono { font-family: 'JetBrains Mono', monospace; }
+        .cyber-grid { background-image: linear-gradient(rgba(188, 19, 254, 0.05) 1px, transparent 1px), linear-gradient(90deg, rgba(188, 19, 254, 0.05) 1px, transparent 1px); background-size: 40px 40px; }
+        .glass-panel { background: rgba(5, 5, 10, 0.85); backdrop-filter: blur(24px); }
+        .neon-border-green { border: 1px solid var(--neon-green); box-shadow: 0 0 10px rgba(57, 255, 20, 0.15), inset 0 0 5px rgba(57, 255, 20, 0.05); }
+        .scanline { width: 100%; height: 4px; background: linear-gradient(to bottom, transparent, rgba(57, 255, 20, 0.05), transparent); position: absolute; left: 0; top: 0; animation: scan 6s linear infinite; pointer-events: none; z-index: 50; }
+        @keyframes scan { 0% { top: -10%; } 100% { top: 110%; } }
+        .animate-pulse-glow { animation: pulse-glow 3s ease-in-out infinite; }
+        @keyframes pulse-glow { 0%, 100% { opacity: 0.7; } 50% { opacity: 1; filter: brightness(1.2); } }
+        ::-webkit-scrollbar { width: 4px; }
+        ::-webkit-scrollbar-track { background: #000; }
+        ::-webkit-scrollbar-thumb { background: var(--neon-green); box-shadow: 0 0 10px var(--neon-green); }
+        .chart-card {
+            background: rgba(5, 5, 10, 0.7);
+            border: 1px solid rgba(255,255,255,0.08);
+            border-radius: 16px;
+            padding: 24px;
+            transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
+            position: relative;
+            overflow: hidden;
+        }
+        .chart-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, rgba(57, 255, 20, 0.3), transparent);
+        }
+        .chart-card:hover {
+            border-color: rgba(57, 255, 20, 0.25);
+            box-shadow: 0 0 30px rgba(57, 255, 20, 0.05);
+            transform: translateY(-2px);
+        }
+        .stat-card {
+            background: rgba(5, 5, 10, 0.8);
+            border-radius: 16px;
+            padding: 24px;
+            position: relative;
+            overflow: hidden;
+            transition: all 0.4s ease;
+        }
+        .stat-card:hover {
+            transform: translateY(-3px);
+        }
+        .stat-card .stat-glow {
+            position: absolute;
+            top: -50%;
+            right: -50%;
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            filter: blur(60px);
+            opacity: 0.08;
+            pointer-events: none;
+        }
+        .empty-analytics {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 60vh;
+            text-align: center;
+            gap: 20px;
+        }
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .animate-in {
+            animation: fadeInUp 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+            opacity: 0;
+        }
+        .delay-1 { animation-delay: 0.1s; }
+        .delay-2 { animation-delay: 0.2s; }
+        .delay-3 { animation-delay: 0.3s; }
+        .delay-4 { animation-delay: 0.4s; }
+        .delay-5 { animation-delay: 0.5s; }
+        .delay-6 { animation-delay: 0.6s; }
+        .delay-7 { animation-delay: 0.7s; }
+    </style>
+</head>
+<body>
+    <div class="min-h-screen relative cyber-grid flex flex-col">
+        <div class="scanline"></div>
+
+        <!-- ===== HEADER ===== -->
+        <header class="sticky top-0 z-[60] glass-panel border-b border-white/10 px-8 py-4 flex items-center justify-between">
+            <div class="flex items-center gap-4">
+                <a href="index.html" class="flex items-center gap-3 px-4 py-2 bg-white/5 border border-white/10 rounded-lg hover:bg-white/10 hover:border-cyan-500/30 transition-all group">
+                    <iconify-icon icon="lucide:arrow-left" class="text-lg text-cyan-400 group-hover:-translate-x-1 transition-transform"></iconify-icon>
+                    <span class="text-xs font-bold text-white/70 uppercase tracking-widest group-hover:text-white transition-colors">Back to Dashboard</span>
+                </a>
+                <div class="h-8 w-px bg-white/10"></div>
+                <div class="flex items-center gap-3">
+                    <div class="w-10 h-10 rounded-lg bg-green-500/10 border border-green-500/30 flex items-center justify-center">
+                        <iconify-icon icon="lucide:bar-chart-3" class="text-xl text-green-400 animate-pulse-glow"></iconify-icon>
+                    </div>
+                    <div class="leading-none">
+                        <h1 class="text-lg font-bold tracking-tighter text-white">FORENSIC <span class="text-green-400">ANALYTICS</span></h1>
+                        <p class="text-[10px] uppercase tracking-[0.3em] text-green-500/60 font-bold">Efficiency & Performance Metrics</p>
+                    </div>
+                </div>
+            </div>
+            <div class="flex items-center gap-6">
+                <div class="flex flex-col items-end hidden md:flex">
+                    <span class="text-[10px] text-green-400 font-bold tracking-widest uppercase">Analysis Report</span>
+                    <span id="header-timestamp" class="text-xs mono text-white/40">—</span>
+                </div>
+                <div class="h-10 w-px bg-white/10"></div>
+                <div class="px-3 py-1.5 bg-green-500/10 border border-green-500/30 rounded-full flex items-center gap-2">
+                    <span class="relative flex h-2 w-2">
+                        <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></span>
+                        <span class="relative inline-flex rounded-full h-2 w-2 bg-green-500"></span>
+                    </span>
+                    <span class="text-[10px] font-bold text-green-400 uppercase tracking-widest">Data Loaded</span>
+                </div>
+            </div>
+        </header>
+
+        <!-- ===== MAIN CONTENT ===== -->
+        <main class="flex-1 p-6 md:p-10 max-w-[1400px] mx-auto w-full">
+
+            <!-- Empty State (shown if no data) -->
+            <div id="empty-state" class="empty-analytics" style="display: none;">
+                <div class="w-24 h-24 rounded-full bg-white/5 border border-white/10 flex items-center justify-center">
+                    <iconify-icon icon="lucide:bar-chart-3" class="text-5xl text-white/20"></iconify-icon>
+                </div>
+                <h2 class="text-2xl font-bold text-white/40">No Analytics Data</h2>
+                <p class="text-sm text-white/25 max-w-md">Run an evidence analysis from the main dashboard first. Analytics will be automatically available here after processing.</p>
+                <a href="index.html" class="mt-4 px-6 py-3 bg-cyan-500/10 border border-cyan-500/30 rounded-lg text-cyan-400 font-bold text-sm uppercase tracking-widest hover:bg-cyan-500/20 transition-all">
+                    <iconify-icon icon="lucide:arrow-left" class="mr-2"></iconify-icon>
+                    Go to Dashboard
+                </a>
+            </div>
+
+            <!-- Analytics Content (shown when data exists) -->
+            <div id="analytics-content" style="display: none;">
+
+                <!-- KPI Stats Row -->
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5 mb-8 animate-in delay-1">
+                    <div class="stat-card border border-green-500/20">
+                        <div class="stat-glow bg-green-500"></div>
+                        <div class="relative z-10">
+                            <div class="flex items-center gap-2 mb-3">
+                                <iconify-icon icon="lucide:timer" class="text-green-400 text-lg"></iconify-icon>
+                                <p class="text-[10px] text-green-400/70 font-bold tracking-widest uppercase">Total Pipeline Time</p>
+                            </div>
+                            <h4 id="stat-total-time" class="text-4xl font-black text-green-400 mono">0.0s</h4>
+                            <div class="flex gap-2 mt-3">
+                                <span id="stat-extraction-time" class="text-[9px] px-2 py-0.5 bg-cyan-500/10 border border-cyan-500/30 rounded-full text-cyan-400 font-bold">EXT: 0s</span>
+                                <span id="stat-reasoning-time" class="text-[9px] px-2 py-0.5 bg-violet-500/10 border border-violet-500/30 rounded-full text-violet-400 font-bold">AI: 0s</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="stat-card border border-cyan-500/20">
+                        <div class="stat-glow bg-cyan-500"></div>
+                        <div class="relative z-10">
+                            <div class="flex items-center gap-2 mb-3">
+                                <iconify-icon icon="lucide:files" class="text-cyan-400 text-lg"></iconify-icon>
+                                <p class="text-[10px] text-cyan-400/70 font-bold tracking-widest uppercase">Files Processed</p>
+                            </div>
+                            <h4 id="stat-total-files" class="text-4xl font-black text-cyan-400 mono">0</h4>
+                            <p id="stat-modalities" class="text-[9px] text-white/40 mt-3 mono">—</p>
+                        </div>
+                    </div>
+                    <div class="stat-card border border-violet-500/20">
+                        <div class="stat-glow bg-violet-500"></div>
+                        <div class="relative z-10">
+                            <div class="flex items-center gap-2 mb-3">
+                                <iconify-icon icon="lucide:text-cursor-input" class="text-violet-400 text-lg"></iconify-icon>
+                                <p class="text-[10px] text-violet-400/70 font-bold tracking-widest uppercase">Characters Extracted</p>
+                            </div>
+                            <h4 id="stat-total-chars" class="text-4xl font-black text-violet-400 mono">0</h4>
+                            <p class="text-[9px] text-white/40 mt-3 mono">Across all modalities</p>
+                        </div>
+                    </div>
+                    <div class="stat-card border border-red-500/20">
+                        <div class="stat-glow bg-red-500"></div>
+                        <div class="relative z-10">
+                            <div class="flex items-center gap-2 mb-3">
+                                <iconify-icon icon="lucide:gauge" class="text-red-400 text-lg"></iconify-icon>
+                                <p class="text-[10px] text-red-400/70 font-bold tracking-widest uppercase">Confidence Score</p>
+                            </div>
+                            <h4 id="stat-confidence" class="text-4xl font-black text-red-400 mono">0%</h4>
+                            <p class="text-[9px] text-white/40 mt-3 mono">AI-computed deterministic</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Charts Row 1: Pipeline Efficiency + Modality Distribution -->
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
+                    <div class="chart-card animate-in delay-2">
+                        <div class="flex items-center justify-between mb-5">
+                            <div class="flex items-center gap-2">
+                                <iconify-icon icon="lucide:timer" class="text-cyan-400 text-lg"></iconify-icon>
+                                <h4 class="text-sm font-bold text-white uppercase tracking-widest">Pipeline Efficiency</h4>
+                            </div>
+                            <span class="text-[9px] text-white/30 mono uppercase">Per-file Breakdown</span>
+                        </div>
+                        <div class="relative" style="height: 300px;">
+                            <canvas id="chart-pipeline"></canvas>
+                        </div>
+                    </div>
+                    <div class="chart-card animate-in delay-3">
+                        <div class="flex items-center justify-between mb-5">
+                            <div class="flex items-center gap-2">
+                                <iconify-icon icon="lucide:pie-chart" class="text-violet-400 text-lg"></iconify-icon>
+                                <h4 class="text-sm font-bold text-white uppercase tracking-widest">Modality Distribution</h4>
+                            </div>
+                            <span class="text-[9px] text-white/30 mono uppercase">Evidence Types</span>
+                        </div>
+                        <div class="relative" style="height: 300px;">
+                            <canvas id="chart-modality"></canvas>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Charts Row 2: Risk Radar + Confidence Gauge -->
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
+                    <div class="chart-card animate-in delay-4">
+                        <div class="flex items-center justify-between mb-5">
+                            <div class="flex items-center gap-2">
+                                <iconify-icon icon="lucide:shield-alert" class="text-red-400 text-lg"></iconify-icon>
+                                <h4 class="text-sm font-bold text-white uppercase tracking-widest">Risk Factor Analysis</h4>
+                            </div>
+                            <span class="text-[9px] text-white/30 mono uppercase">Threat Categories</span>
+                        </div>
+                        <div class="relative" style="height: 320px;">
+                            <canvas id="chart-risk"></canvas>
+                        </div>
+                    </div>
+                    <div class="chart-card animate-in delay-5">
+                        <div class="flex items-center justify-between mb-5">
+                            <div class="flex items-center gap-2">
+                                <iconify-icon icon="lucide:gauge" class="text-green-400 text-lg"></iconify-icon>
+                                <h4 class="text-sm font-bold text-white uppercase tracking-widest">Confidence Gauge</h4>
+                            </div>
+                            <span class="text-[9px] text-white/30 mono uppercase">Deterministic Score</span>
+                        </div>
+                        <div class="relative flex items-center justify-center" style="height: 320px;">
+                            <canvas id="chart-confidence"></canvas>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Charts Row 3: Keyword Heatmap + Content Richness -->
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
+                    <div class="chart-card animate-in delay-6">
+                        <div class="flex items-center justify-between mb-5">
+                            <div class="flex items-center gap-2">
+                                <iconify-icon icon="lucide:search-code" class="text-yellow-400 text-lg"></iconify-icon>
+                                <h4 class="text-sm font-bold text-white uppercase tracking-widest">Keyword Hit Frequency</h4>
+                            </div>
+                            <span class="text-[9px] text-white/30 mono uppercase">Forensic Keywords</span>
+                        </div>
+                        <div class="relative" style="height: 340px;">
+                            <canvas id="chart-keywords"></canvas>
+                        </div>
+                    </div>
+                    <div class="chart-card animate-in delay-7">
+                        <div class="flex items-center justify-between mb-5">
+                            <div class="flex items-center gap-2">
+                                <iconify-icon icon="lucide:file-text" class="text-cyan-400 text-lg"></iconify-icon>
+                                <h4 class="text-sm font-bold text-white uppercase tracking-widest">Content Richness per File</h4>
+                            </div>
+                            <span class="text-[9px] text-white/30 mono uppercase">Extraction Yield</span>
+                        </div>
+                        <div class="relative" style="height: 340px;">
+                            <canvas id="chart-richness"></canvas>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </main>
+
+        <!-- ===== FOOTER ===== -->
+        <footer class="px-8 py-4 border-t border-white/10 text-center glass-panel z-50">
+            <div class="flex flex-col md:flex-row items-center justify-between gap-4 max-w-[1400px] mx-auto">
+                <p class="text-xs text-gray-600 font-bold uppercase tracking-[0.4em]">INVESTIGEN FORENSIC ANALYTICS MODULE // RESTRICTED ACCESS</p>
+                <a href="index.html" class="text-xs text-cyan-500/50 hover:text-cyan-400 font-bold uppercase tracking-widest transition-colors">← Return to Investigation</a>
+            </div>
+        </footer>
+    </div>
+
+    <script src="analytics.js"></script>
+</body>
+</html>

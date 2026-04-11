@@ -74,7 +74,14 @@
                 </div>
                 <div class="h-10 w-px bg-white/10"></div>
                 <div class="flex items-center gap-4 text-white/60">
-                    <!-- Removed icons and profile picture -->
+                    <button id="reset-dashboard-btn" class="flex items-center gap-2 px-4 py-2 bg-red-500/10 border border-red-500/30 rounded-lg text-red-400 hover:bg-red-500/20 hover:border-red-500/50 transition-all group" title="Start new case analysis">
+                        <iconify-icon icon="lucide:refresh-cw" class="text-lg group-hover:rotate-180 transition-transform duration-500"></iconify-icon>
+                        <span class="text-xs font-bold uppercase tracking-widest hidden lg:inline">New Case</span>
+                    </button>
+                    <a href="analytics.html" id="analytics-nav-btn" class="flex items-center gap-2 px-4 py-2 bg-green-500/10 border border-green-500/30 rounded-lg text-green-400 hover:bg-green-500/20 hover:border-green-500/50 transition-all group opacity-40 pointer-events-none" title="Run analysis first">
+                        <iconify-icon icon="lucide:bar-chart-3" class="text-lg group-hover:scale-110 transition-transform"></iconify-icon>
+                        <span class="text-xs font-bold uppercase tracking-widest hidden lg:inline">Analytics</span>
+                    </a>
                 </div>
             </div>
         </header>
@@ -196,6 +203,7 @@
                         <!-- Evidence Cards dynamically generated here -->
                     </div>
                 </section>
+
             </div>
 
             <aside class="col-span-12 lg:col-span-3 space-y-6 h-[calc(100vh-140px)] overflow-y-auto pr-2 scroll-hidden">

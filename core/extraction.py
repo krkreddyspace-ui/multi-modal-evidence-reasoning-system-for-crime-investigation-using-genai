@@ -4,6 +4,7 @@ import pandas as pd
 import whisper
 import pytesseract
 from PIL import Image
+from loguru import logger
 
 
 # ----------------------------------
@@ -13,13 +14,16 @@ from PIL import Image
 _whisper_model = None
 
 
-def load_whisper_model(model_size="base"):
+def load_whisper_model(model_size="tiny"):
     global _whisper_model
 
     if _whisper_model is None:
+        logger.info(f"<cyan>Loading Whisper model ({model_size})...</cyan>")
         try:
             _whisper_model = whisper.load_model(model_size)
+            logger.success("<green>Whisper model loaded successfully.</green>")
         except Exception as e:
+            logger.error(f"Failed to load Whisper model: {e}")
             raise RuntimeError(f"Failed to load Whisper model: {e}")
 
     return _whisper_model
@@ -30,10 +34,12 @@ def load_whisper_model(model_size="base"):
 # ----------------------------------
 
 def extract_from_text(file_path: str) -> dict:
+    logger.info(f"MODALITY [TEXT] -> Processing: {os.path.basename(file_path)}")
     try:
         with open(file_path, "r", encoding="utf-8", errors="ignore") as f:
             text = f.read()
 
+        logger.debug(f"Read {len(text)} characters from text file.")
         return {
             "modality": "text",
             "content": text.strip(),
@@ -53,14 +59,16 @@ def extract_from_text(file_path: str) -> dict:
 # ----------------------------------
 
 def extract_from_image(file_path: str) -> dict:
-
+    logger.info(f"MODALITY [IMAGE] -> Processing: {os.path.basename(file_path)}")
     try:
         image = Image.open(file_path)
+        logger.debug(f"Image opened: {image.size} {image.format}")
 
         custom_config = r"--oem 3 --psm 6"
-
+        logger.info("Running Tesseract OCR engine...")
         text = pytesseract.image_to_string(image, config=custom_config)
 
+        logger.debug(f"OCR Complete. Extracted {len(text)} characters.")
         return {
             "modality": "image",
             "content": text.strip(),
@@ -81,22 +89,21 @@ def extract_from_image(file_path: str) -> dict:
 # ----------------------------------
 
 def extract_from_pdf(file_path: str) -> dict:
-
+    logger.info(f"MODALITY [PDF] -> Processing: {os.path.basename(file_path)}")
     text = ""
-
     try:
-
         with open(file_path, "rb") as file:
-
             reader = PyPDF2.PdfReader(file)
+            num_pages = len(reader.pages)
+            logger.debug(f"PDF contains {num_pages} pages.")
 
-            for page in reader.pages:
-
+            for i, page in enumerate(reader.pages):
+                logger.debug(f"Extracting text from page {i+1}/{num_pages}...")
                 page_text = page.extract_text()
-
                 if page_text:
                     text += page_text
 
+        logger.info(f"PDF Extraction complete. Total characters: {len(text)}")
         return {
             "modality": "pdf",
             "content": text.strip(),
@@ -117,17 +124,17 @@ def extract_from_pdf(file_path: str) -> dict:
 # ----------------------------------
 
 def extract_from_csv(file_path: str) -> dict:
-
+    logger.info(f"MODALITY [CSV] -> Processing: {os.path.basename(file_path)}")
     try:
-
         df = pd.read_csv(file_path)
+        logger.debug(f"CSV Loaded. Shape: {df.shape}")
 
         text_representation = ""
-
         for index, row in df.iterrows():
             row_text = ", ".join([f"{col}: {row[col]}" for col in df.columns])
             text_representation += row_text + "\n"
 
+        logger.info(f"CSV Flattened. Extracted {len(text_representation)} characters.")
         return {
             "modality": "csv",
             "content": text_representation.strip(),
@@ -152,10 +159,10 @@ def extract_from_csv(file_path: str) -> dict:
 # ----------------------------------
 
 def extract_from_audio(file_path: str) -> dict:
-
+    logger.info(f"MODALITY [AUDIO] -> Processing: {os.path.basename(file_path)}")
     try:
-
         if not os.path.exists(file_path):
+            logger.warning(f"Audio file missing: {file_path}")
             return {
                 "modality": "audio",
                 "content": "Audio file not found",
@@ -163,6 +170,7 @@ def extract_from_audio(file_path: str) -> dict:
             }
 
         if os.path.getsize(file_path) == 0:
+            logger.warning(f"Audio file is empty: {file_path}")
             return {
                 "modality": "audio",
                 "content": "Audio file is empty",
@@ -170,14 +178,15 @@ def extract_from_audio(file_path: str) -> dict:
             }
 
         model = load_whisper_model()
-
+        logger.info("Initializing transcription via Whisper...")
         result = model.transcribe(file_path)
 
         text = result.get("text", "").strip()
-
         if text == "":
+            logger.warning("No speech detected in audio file.")
             text = "No speech detected"
 
+        logger.success(f"Transcription complete. Language: {result.get('language')}")
         return {
             "modality": "audio",
             "content": text,
@@ -201,6 +210,7 @@ def extract_from_audio(file_path: str) -> dict:
 # ----------------------------------
 
 def extract_evidence(file_path: str) -> dict:
+    logger.info(f"Routing file: <cyan>{os.path.basename(file_path)}</cyan>")
 
     ext = os.path.splitext(file_path)[1].lower()
 

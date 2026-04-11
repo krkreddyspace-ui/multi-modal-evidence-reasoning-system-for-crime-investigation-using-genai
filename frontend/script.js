@@ -10,9 +10,38 @@ document.addEventListener('DOMContentLoaded', () => {
     const loadingState = document.getElementById('loading-state');
     const resultsDashboard = document.getElementById('results-dashboard');
     const evidenceContainer = document.getElementById('evidence-container');
+    const resetBtn = document.getElementById('reset-dashboard-btn');
 
     // State
     let selectedFiles = [];
+
+    // --- Restore cached dashboard on page load ---
+    const cachedData = localStorage.getItem('forensic_dashboard_data');
+    let hasRestoredFromCache = false;
+    
+    if (cachedData) {
+        try {
+            const data = JSON.parse(cachedData);
+            populateDashboard(data);
+            updateFlowchartState(3);
+            hasRestoredFromCache = true;
+            // Re-enable analytics nav button
+            const navBtn = document.getElementById('analytics-nav-btn');
+            if (navBtn) {
+                navBtn.classList.remove('opacity-40', 'pointer-events-none');
+                navBtn.classList.add('opacity-100', 'shadow-[0_0_15px_rgba(57,255,20,0.2)]');
+                navBtn.title = 'View Forensic Analytics';
+            }
+            
+            // Scroll to the main dashboard container automatically
+            setTimeout(() => {
+                document.getElementById('dashboard-content').scrollIntoView({ behavior: 'smooth' });
+            }, 500); // slight delay to allow rendering
+            
+        } catch(e) {
+            console.warn('Failed to restore cached dashboard:', e);
+        }
+    }
 
     // --- Process Flow Manager ---
     function updateFlowchartState(step) {
@@ -93,7 +122,9 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
-    updateFlowchartState(0);
+    if (!hasRestoredFromCache) {
+        updateFlowchartState(0);
+    }
 
     // --- Drag & Drop Handlers ---
     ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
@@ -225,6 +256,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
             const data = await response.json();
             
+            // Cache the full response for persistence across navigation
+            localStorage.setItem('forensic_dashboard_data', JSON.stringify(data));
+            
             updateFlowchartState(3);
             
             populateDashboard(data);
@@ -246,7 +280,7 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     function populateDashboard(data) {
-        const { summary, raw_evidence } = data;
+        const { summary, raw_evidence, analytics } = data;
 
         // Top KPIs
         const culpritText = summary.culprit || "Unknown";
@@ -413,7 +447,61 @@ document.addEventListener('DOMContentLoaded', () => {
             htmlCard.innerHTML = innerHTML;
             evidenceContainer.appendChild(htmlCard);
         });
+        // --- Save Analytics to localStorage & enable nav button ---
+        if (analytics) {
+            localStorage.setItem('forensic_analytics', JSON.stringify(analytics));
+            localStorage.setItem('forensic_analytics_ts', Date.now().toString());
+            
+            // Enable the Analytics nav button
+            const navBtn = document.getElementById('analytics-nav-btn');
+            if (navBtn) {
+                navBtn.classList.remove('opacity-40', 'pointer-events-none');
+                navBtn.classList.add('opacity-100', 'shadow-[0_0_15px_rgba(57,255,20,0.2)]');
+                navBtn.title = 'View Forensic Analytics';
+            }
+        }
     }
+
+    // --- Reset / New Case Logic ---
+    resetBtn.addEventListener('click', () => {
+        if (confirm("Clear current investigation data and start a new case?")) {
+            // Clear Storage
+            localStorage.removeItem('forensic_dashboard_data');
+            localStorage.removeItem('forensic_analytics');
+            localStorage.removeItem('forensic_analytics_ts');
+
+            // Reset State Variables
+            selectedFiles = [];
+            hasRestoredFromCache = false;
+
+            // Reset UI components
+            renderFileList();
+            updateFlowchartState(0);
+            
+            // Re-disable analytics button
+            const navBtn = document.getElementById('analytics-nav-btn');
+            if (navBtn) {
+                navBtn.classList.add('opacity-40', 'pointer-events-none');
+                navBtn.classList.remove('opacity-100', 'shadow-[0_0_15px_rgba(57,255,20,0.2)]');
+                navBtn.title = 'Run analysis first';
+            }
+
+            // Clear Dashboard Displays
+            document.getElementById('res-culprit').textContent = "Awaiting ID";
+            document.getElementById('res-culprit').classList.remove('text-gray-500');
+            document.getElementById('res-culprit').classList.add('text-white');
+            document.getElementById('res-confidence').textContent = "0%";
+            document.getElementById('res-confidence-bar').style.width = "0%";
+            document.getElementById('res-reasoning').innerHTML = "Awaiting data...";
+            document.getElementById('res-key-evidence').innerHTML = "Awaiting parameters...";
+            document.getElementById('res-eliminated').innerHTML = "Awaiting parameters...";
+            document.getElementById('res-tags').innerHTML = '<span class="text-[8px] px-1 bg-red-500/20 border border-red-500/40 rounded text-red-400 font-bold uppercase">CRITICAL</span>';
+            evidenceContainer.innerHTML = '';
+            
+            // Scroll back to top
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+    });
 
     // Small utility to parse bold asterisks correctly since server returns raw text
     function parseSimpleMarkdown(text) {

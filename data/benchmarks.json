@@ -1,0 +1,82 @@
+[
+    {
+        "predicted": "**Ravi Sharma**",
+        "confidence": 78.12,
+        "latency": 14885,
+        "actual": "Ravi Sharma",
+        "case_id": "case_1",
+        "correct": true
+    },
+    {
+        "predicted": "**Ravi Sharma**",
+        "confidence": 79.46,
+        "latency": 16213,
+        "actual": "Ravi Sharma",
+        "case_id": "case_10",
+        "correct": true
+    },
+    {
+        "predicted": "**Leo Carter**",
+        "confidence": 77.96,
+        "latency": 17200,
+        "actual": "Leo Carter",
+        "case_id": "case_2",
+        "correct": true
+    },
+    {
+        "predicted": "**Nina Patel**",
+        "confidence": 77.03,
+        "latency": 14753,
+        "actual": "Nina Patel",
+        "case_id": "case_3",
+        "correct": true
+    },
+    {
+        "predicted": "**Leo Carter**",
+        "confidence": 79.23,
+        "latency": 15932,
+        "actual": "Leo Carter",
+        "case_id": "case_4",
+        "correct": true
+    },
+    {
+        "predicted": "**Leo Carter**",
+        "confidence": 77.0,
+        "latency": 18038,
+        "actual": "Leo Carter",
+        "case_id": "case_5",
+        "correct": true
+    },
+    {
+        "predicted": "**Nina Patel**",
+        "confidence": 75.95,
+        "latency": 20563,
+        "actual": "John Miller",
+        "case_id": "case_6",
+        "correct": false
+    },
+    {
+        "predicted": "**Alex Brown**",
+        "confidence": 76.51,
+        "latency": 14614,
+        "actual": "Alex Brown",
+        "case_id": "case_7",
+        "correct": true
+    },
+    {
+        "predicted": "**Emily Rose**",
+        "confidence": 76.05,
+        "latency": 12521,
+        "actual": "Emily Rose",
+        "case_id": "case_8",
+        "correct": true
+    },
+    {
+        "predicted": "**John Miller**",
+        "confidence": 79.42,
+        "latency": 19219,
+        "actual": "John Miller",
+        "case_id": "case_9",
+        "correct": true
+    }
+]
