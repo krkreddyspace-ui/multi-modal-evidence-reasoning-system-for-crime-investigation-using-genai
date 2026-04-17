@@ -43,7 +43,7 @@ def apply_rules(evidence: Dict) -> List[str]:
 
 
 # -----------------------------
-# GenAI-style reasoning (mocked)
+# GenAI-style reasoning
 # -----------------------------
 def genai_reason(evidence: Dict, signals: List[str]) -> Dict:
     """

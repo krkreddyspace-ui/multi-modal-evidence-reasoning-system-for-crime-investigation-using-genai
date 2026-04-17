@@ -4,7 +4,7 @@ from loguru import logger
 from core.extraction import extract_evidence
 from core.reasoning import reason_over_evidence
 
-# logger = logging.getLogger("pipeline") # Removed in favor of loguru
+
 
 
 def run_pipeline(file_path: str) -> Dict:

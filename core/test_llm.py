@@ -4,7 +4,7 @@ from core.correlation_engine import run_case_correlation
 
 
 
-# Use sample input that your engine expects
+# Use sample input
 sample_input = [
     {
         "evidence": {

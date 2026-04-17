@@ -15,7 +15,7 @@ import plotext as plt
 
 from core.extraction import extract_evidence
 
-# Configure Loguru with a professional forensic theme
+# Configure Loguru
 logger.remove()
 logger.add(sys.stderr, format="<green>{time:YYYY-MM-DD HH:mm:ss}</green> | <level>{level: <8}</level> | <cyan>{name}</cyan>:<cyan>{function}</cyan>:<cyan>{line}</cyan> - <level>{message}</level>")
 
@@ -40,7 +40,7 @@ def clean_text(text):
     return text.strip()
 
 def calculate_confidence_score(results, all_text):
-    score = 50  # Increased Base Score from 20 to 50
+    score = 50  
     
     # Diversity Bonus
     unique_types = set()
@@ -50,21 +50,21 @@ def calculate_confidence_score(results, all_text):
         elif "image" in ctype: unique_types.add("image")
         elif "pdf" in ctype or "text" in ctype: unique_types.add("text")
     
-    score += min(30, len(unique_types) * 15)  # Increased from 10 to 15 per type
+    score += min(30, len(unique_types) * 15)  
     
     text_lower = all_text.lower()
     
     # High-impact keywords
     high_keywords = ["confess", "kill", "murder", "stole", "bribe", "admit", "hacked", "guilty", "blood", "weapon"]
     high_matches = sum(1 for kw in high_keywords if kw in text_lower)
-    score += min(30, high_matches * 20)  # Increased from 15 to 20 per match
+    score += min(30, high_matches * 20)  
     
     # Medium-impact keywords
     medium_keywords = ["threat", "fraud", "illegal", "secret", "suspicious", "transfer", "log", "deleted", "transaction", "access"]
     med_matches = sum(1 for kw in medium_keywords if kw in text_lower)
-    score += min(20, med_matches * 10)  # Increased from 5 to 10 per match
+    score += min(20, med_matches * 10)  
     
-    score = min(98, score) # Cap at 98%
+    score = min(98, score) 
     return f"{score}%"
 
 def parse_output(text):
@@ -101,7 +101,7 @@ def parse_output(text):
                 if lines:
                     sections["culprit"] = lines[-1]
 
-        # Clean off any literal brackets the AI might have repeated
+        # Clean off any literal brackets 
         sections["culprit"] = re.sub(r'\[.*?\]|<.*?>', '', sections["culprit"]).strip()
 
         ev = re.search(r"Key Evidence:(.*?)(Reasoning:)", text, re.S | re.IGNORECASE)
@@ -191,7 +191,7 @@ async def analyze_evidence(files: List[UploadFile] = File(...)):
         if content:
             all_text += "\n" + clean_text(content)
 
-    # Cap context length to speed up LLM processing significantly
+    # Cap context length to speed up LLM processing 
     all_text = all_text[:6000]
 
     prompt = f"""
@@ -247,10 +247,10 @@ Eliminated Suspects:
 
     sections = parse_output(result_text)
     
-    # Override confidence with our deterministic score
+
     sections["confidence"] = calculate_confidence_score(results, all_text)
 
-    # --- ADVANCED TERMINAL ANALYTICS REPORT ---
+    # --- ANALYTICS REPORT ---
     try:
         conf_value = int(sections["confidence"].replace("%", ""))
         
@@ -307,7 +307,7 @@ Eliminated Suspects:
     except Exception as e:
         logger.warning(f"Terminal graph rendering failed: {e}")
 
-    # --- FINAL TERMINAL REPORT (The "Editor" request) ---
+    # --- FINAL TERMINAL REPORT ---
     print("\n" + "="*60)
     print("       FORENSIC INVESTIGATION SUMMARY REPORT")
     print("="*60)
@@ -349,7 +349,7 @@ Eliminated Suspects:
         hits = sum(1 for kw in kws if kw in text_lower)
         if hits > 0:
             risk_scores[cat] = hits
-        # Also track individual keyword hits
+        # track individual keyword hits
         for kw in kws:
             if kw in text_lower:
                 keyword_hits[kw] = keyword_hits.get(kw, 0) + text_lower.count(kw)
@@ -357,7 +357,7 @@ Eliminated Suspects:
     # Sort keyword hits descending and take top 12
     top_keywords = dict(sorted(keyword_hits.items(), key=lambda x: x[1], reverse=True)[:12])
     
-    # Evidence content lengths for each modality (text richness)
+    # Evidence content lengths for each modality
     content_lengths = []
     for r in results:
         content = r.get("evidence", {}).get("content", "")

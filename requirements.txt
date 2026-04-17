@@ -11,7 +11,7 @@ pyyaml>=6.0
 # Audio processing
 openai-whisper
 
-# Image & OCR (future use)
+# Image & OCR
 opencv-python
 pillow
 pytesseract

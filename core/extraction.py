@@ -8,7 +8,7 @@ from loguru import logger
 
 
 # ----------------------------------
-# Whisper Model Loader (Cached)
+# Whisper Model Loader
 # ----------------------------------
 
 _whisper_model = None
@@ -155,7 +155,7 @@ def extract_from_csv(file_path: str) -> dict:
 
 
 # ----------------------------------
-# AUDIO TRANSCRIPTION (SAFE)
+# AUDIO TRANSCRIPTION
 # ----------------------------------
 
 def extract_from_audio(file_path: str) -> dict:
